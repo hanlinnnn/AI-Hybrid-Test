@@ -39,9 +39,9 @@ describe('Semgrep integration tests', { skip }, () => {
 
   describe('runSemgrep', () => {
     it('executes against test codebase and returns valid SARIF', async () => {
-      // Make sure AGHAST_MOCK_SEMGREP is not set
-      const origMock = process.env.AGHAST_MOCK_SEMGREP;
-      delete process.env.AGHAST_MOCK_SEMGREP;
+      // Make sure AGHAST_MOCK_SARIF is not set
+      const origMock = process.env.AGHAST_MOCK_SARIF;
+      delete process.env.AGHAST_MOCK_SARIF;
 
       try {
         const sarifContent = await runSemgrep({
@@ -56,7 +56,7 @@ describe('Semgrep integration tests', { skip }, () => {
         assert.ok(Array.isArray(parsed.runs[0].results), 'SARIF should have results array');
       } finally {
         if (origMock !== undefined) {
-          process.env.AGHAST_MOCK_SEMGREP = origMock;
+          process.env.AGHAST_MOCK_SARIF = origMock;
         }
       }
     });
@@ -64,8 +64,8 @@ describe('Semgrep integration tests', { skip }, () => {
 
   describe('parsed targets', () => {
     it('parsed SARIF contains targets pointing to test codebase files', async () => {
-      const origMock = process.env.AGHAST_MOCK_SEMGREP;
-      delete process.env.AGHAST_MOCK_SEMGREP;
+      const origMock = process.env.AGHAST_MOCK_SARIF;
+      delete process.env.AGHAST_MOCK_SARIF;
 
       try {
         const sarifContent = await runSemgrep({
@@ -84,7 +84,7 @@ describe('Semgrep integration tests', { skip }, () => {
         }
       } finally {
         if (origMock !== undefined) {
-          process.env.AGHAST_MOCK_SEMGREP = origMock;
+          process.env.AGHAST_MOCK_SARIF = origMock;
         }
       }
     });
@@ -96,8 +96,8 @@ describe('Semgrep integration tests', { skip }, () => {
     });
 
     it('config with semgrep check + real semgrep + mock AI → results with targetsAnalyzed > 0', async () => {
-      const origMock = process.env.AGHAST_MOCK_SEMGREP;
-      delete process.env.AGHAST_MOCK_SEMGREP;
+      const origMock = process.env.AGHAST_MOCK_SARIF;
+      delete process.env.AGHAST_MOCK_SARIF;
 
       try {
         const provider = new MockAgentProvider({ response: { issues: [] } });
@@ -135,7 +135,7 @@ describe('Semgrep integration tests', { skip }, () => {
         assert.equal(results.checks[0].status, 'PASS');
       } finally {
         if (origMock !== undefined) {
-          process.env.AGHAST_MOCK_SEMGREP = origMock;
+          process.env.AGHAST_MOCK_SARIF = origMock;
         }
       }
     });
@@ -143,8 +143,8 @@ describe('Semgrep integration tests', { skip }, () => {
 
   describe('error handling', () => {
     it('invalid rule file → error from Semgrep execution', async () => {
-      const origMock = process.env.AGHAST_MOCK_SEMGREP;
-      delete process.env.AGHAST_MOCK_SEMGREP;
+      const origMock = process.env.AGHAST_MOCK_SARIF;
+      delete process.env.AGHAST_MOCK_SARIF;
 
       try {
         await assert.rejects(
@@ -156,7 +156,7 @@ describe('Semgrep integration tests', { skip }, () => {
         );
       } finally {
         if (origMock !== undefined) {
-          process.env.AGHAST_MOCK_SEMGREP = origMock;
+          process.env.AGHAST_MOCK_SARIF = origMock;
         }
       }
     });
